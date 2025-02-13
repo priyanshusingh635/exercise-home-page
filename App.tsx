@@ -1,3 +1,4 @@
+import { useState } from "react";
 import React from "react";
 import { View, Text, TouchableOpacity, ScrollView, StyleSheet, Image } from "react-native";
 
@@ -12,10 +13,19 @@ const workoutIcons = {
   arrow: require("./assets/rightarrow.png"),
   search: require("./assets/search.png"),
 };
-
+  
 const FitnessAppScreen = () => {
+  const [showNotifications, setShowNotifications] = useState(false);
+  const notifications = [
+    "Don't forget to hydrate during your workout",
+    "Congrats on completing your first week of workouts!",
+    "It's HIIT o'clock! Time for a quick and intense workout",
+    "Hey fitness enthusiast, time to log your latest workout",
+  ];
   const categories = ["All", "Warm Up", "Yoga", "Biceps", "Chest", "Cardio"];
   console.log("Applying font: Kurale");
+    
+  
   
   return (
     <View style={styles.container}> 
@@ -29,7 +39,7 @@ const FitnessAppScreen = () => {
             <Text style={styles.greetingText2}> {"\n"}Utkarsh Sundkar</Text>
           </View>
           <View style={styles.headerIcons}>
-            <TouchableOpacity>
+          <TouchableOpacity onPress={() => setShowNotifications(!showNotifications)}>
               <Image source={require("./assets/notification.png")} style={styles.icon} />
             </TouchableOpacity>
             <TouchableOpacity>
@@ -37,6 +47,17 @@ const FitnessAppScreen = () => {
             </TouchableOpacity>
           </View>
         </View>
+          {/* Notification Panel */}
+          {showNotifications && (
+          <View style={styles.notificationPanel}>
+            <Text style={styles.notificationTitle}>Notifications</Text>
+            {notifications.map((notification, index) => (
+              <View key={index} style={styles.notificationItem}>
+                <Text style={styles.notificationText}>{notification}</Text>
+              </View>
+            ))}
+          </View>
+        )}
 
         {/* Banner Section */}
         <View style={styles.banner}>
@@ -362,6 +383,37 @@ const styles = StyleSheet.create({
 bannerImage: {
       width: 126,
       height: 135,
-      marginBottom: -38,
+      marginBottom: -38,},
+      notificationPanel: {
+        position: "absolute",
+        top: 70, // Adjust position based on your layout
+        right: 20,
+        width: 300,
+        backgroundColor: "white",
+        borderRadius: 10,
+        padding: 10,
+        shadowColor: "#000",
+        shadowOpacity: 0.1,
+        shadowRadius: 10,
+        shadowOffset: { width: 0, height: 4 },
+        elevation: 5,
+        zIndex: 10,
+      },
+      notificationTitle: {
+        fontSize: 16,
+        fontWeight: "bold",
+        marginBottom: 10,
+      },
+      notificationItem: {
+        padding: 10,
+        borderBottomWidth: 1,
+        borderBottomColor: "#ddd",
+      },
+      notificationText: {
+        fontSize: 14,
+        color: "#333",
+      },
 },
-});
+);
+
+
